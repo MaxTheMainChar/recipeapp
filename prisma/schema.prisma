@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum CostLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Recipe {
+  id               Int          @id @default(autoincrement())
+  slug             String       @unique
+  title            String
+  description      String?
+  totalTimeMinutes Int
+  difficulty       Difficulty   @default(EASY)
+  costLevel        CostLevel    @default(LOW)
+  isVegetarian     Boolean      @default(false)
+  isVegan          Boolean      @default(false)
+  isGlutenFree     Boolean      @default(false)
+  equipment        String?
+  servings         Int?         @default(1)
+
+  ingredients      Ingredient[]
+  steps            Step[]
+  tags             RecipeTagOnRecipe[]
+
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model Ingredient {
+  id       Int    @id @default(autoincrement())
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+  text     String
+  order    Int
+}
+
+model Step {
+  id       Int    @id @default(autoincrement())
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int
+  text     String
+  order    Int
+}
+
+model RecipeTag {
+  id      Int                  @id @default(autoincrement())
+  name    String               @unique
+  recipes RecipeTagOnRecipe[]
+}
+
+model RecipeTagOnRecipe {
+  recipeId Int
+  tagId    Int
+  recipe   Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  tag      RecipeTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([recipeId, tagId])
+}
