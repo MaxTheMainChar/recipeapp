@@ -1,5 +1,5 @@
 import RecipeClient from "./recipe-client"
-import { prisma } from "@/lib/prisma"
+import { query } from "@/lib/db"
 import type { RecipeDTO } from "@/lib/types"
 
 type Props = { params: any }
@@ -19,16 +19,10 @@ export default async function RecipeDetail({ params }: Props) {
     )
   }
 
-  const recipe = await prisma.recipe.findUnique({
-    where: { slug },
-    include: {
-      ingredients: { orderBy: { order: "asc" } },
-      steps: { orderBy: { order: "asc" } },
-      tags: { include: { tag: true } },
-    },
-  })
+  const res = await query('SELECT id, slug, title, description, "totalTimeMinutes", difficulty, "costLevel", "isVegetarian", "isVegan", "isGlutenFree", equipment, servings, "createdAt", "updatedAt" FROM "Recipe" WHERE slug = $1 LIMIT 1', [slug])
+  const recipeRow = res.rows[0]
 
-  if (!recipe) {
+  if (!recipeRow) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
@@ -36,6 +30,17 @@ export default async function RecipeDetail({ params }: Props) {
         </div>
       </div>
     )
+  }
+
+  const ingRes = await query('SELECT text, "order" FROM "Ingredient" WHERE "recipeId" = $1 ORDER BY "order" ASC', [recipeRow.id])
+  const stepsRes = await query('SELECT text, "order" FROM "Step" WHERE "recipeId" = $1 ORDER BY "order" ASC', [recipeRow.id])
+  const tagRes = await query('SELECT rt.name FROM "RecipeTagOnRecipe" rj JOIN "RecipeTag" rt ON rt.id = rj."tagId" WHERE rj."recipeId" = $1', [recipeRow.id])
+
+  const recipe = {
+    ...recipeRow,
+    ingredients: ingRes.rows.map((r: any) => ({ text: r.text, order: r.order })),
+    steps: stepsRes.rows.map((s: any) => ({ text: s.text, order: s.order })),
+    tags: tagRes.rows.map((t: any) => ({ tag: { name: t.name } })),
   }
 
   // Map to the client shape expected by RecipeClient

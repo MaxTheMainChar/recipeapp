@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../../lib/prisma";
 import parseIngredientInput, { levenshtein } from "../../../utils/parse-ingredients";
+import { query } from "../../../lib/db";
 
 export async function GET(req: NextRequest) {
   try {
@@ -51,15 +51,48 @@ export async function GET(req: NextRequest) {
       }));
     }
 
-    const recipes = await prisma.recipe.findMany({
-      where,
-      take: 50,
-      include: {
-        ingredients: { orderBy: { order: "asc" } },
-        steps: { orderBy: { order: "asc" } },
-        tags: { include: { tag: true } },
-      },
-    });
+    // Fetch basic recipe rows (id, slug, title, description, totalTimeMinutes, flags)
+    const whereClauses: string[] = [];
+    const params: any[] = [];
+    let idx = 1;
+    if (where.totalTimeMinutes) {
+      whereClauses.push(`"totalTimeMinutes" <= $${idx++}`);
+      params.push(where.totalTimeMinutes.lte);
+    }
+    if (where.isVegetarian === true) {
+      whereClauses.push(`"isVegetarian" = true`);
+    }
+    if (where.isVegan === true) {
+      whereClauses.push(`"isVegan" = true`);
+    }
+    if (where.title) {
+      whereClauses.push(`title ILIKE $${idx++}`);
+      params.push(`%${where.title.contains}%`);
+    }
+
+    // tag filter handled later by filtering results client-side for simplicity
+
+    const whereSql = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : '';
+
+    const recipesRes = await query(
+      `SELECT id, slug, title, description, "totalTimeMinutes", difficulty, "costLevel", "isVegetarian", "isVegan", "isGlutenFree", equipment, servings, "createdAt", "updatedAt" FROM "Recipe" ${whereSql} ORDER BY "createdAt" DESC LIMIT 50`,
+      params
+    );
+
+    const recipes = [] as any[];
+    for (const row of recipesRes.rows) {
+      // fetch ingredients, steps, tags per recipe
+      const ing = await query('SELECT text, "order" FROM "Ingredient" WHERE "recipeId" = $1 ORDER BY "order" ASC', [row.id]);
+      const steps = await query('SELECT text, "order" FROM "Step" WHERE "recipeId" = $1 ORDER BY "order" ASC', [row.id]);
+      const tagJoins = await query('SELECT rt.name FROM "RecipeTagOnRecipe" rj JOIN "RecipeTag" rt ON rt.id = rj."tagId" WHERE rj."recipeId" = $1', [row.id]);
+
+      recipes.push({
+        ...row,
+        ingredients: ing.rows.map((r: any) => ({ text: r.text, order: r.order })),
+        steps: steps.rows.map((s: any) => ({ text: s.text, order: s.order })),
+        tags: tagJoins.rows.map((t: any) => ({ tag: { name: t.name } })),
+      });
+    }
 
     // Map tags to names for clarity and compute fuzzy scoring
     const scored = [] as any[]
@@ -119,6 +152,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ recipes: scored })
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    const body: any = { error: "Server error" };
+    if (process.env.NODE_ENV !== 'production') {
+      body.message = (err as any)?.message;
+      body.stack = (err as any)?.stack;
+    }
+    return NextResponse.json(body, { status: 500 });
   }
 }
