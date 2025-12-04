@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type KeyboardEvent } from "react"
 import { useRouter } from "next/navigation"
 import { ChefHat, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import parseIngredientInput from "@/utils/parse-ingredients"
 
 const commonIngredients = ["egg", "rice", "cheese", "tomato", "onion", "garlic", "chicken", "pasta"]
 
@@ -23,14 +24,19 @@ export default function Home() {
   }
 
   const handleFindRecipes = () => {
-    const ingredientList = ingredients
-      .split(",")
-      .map((i) => i.trim())
-      .filter((i) => i.length > 0)
-      .join(",")
+    const parsed = parseIngredientInput(ingredients)
+    if (parsed.length > 0) {
+      const params = new URLSearchParams()
+      params.set("ingredients", parsed.join(","))
+      router.push(`/results?${params.toString()}`)
+    }
+  }
 
-    if (ingredientList) {
-      router.push(`/results?ingredients=${encodeURIComponent(ingredientList)}`)
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    // Submit on Enter (without Shift). Allow Shift+Enter for newline.
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      handleFindRecipes()
     }
   }
 
@@ -67,6 +73,7 @@ export default function Home() {
               id="ingredients"
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="e.g., chicken, rice, onion, garlic, tomato"
               className="w-full h-32 px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
             />

@@ -7,7 +7,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import RecipeCard from "@/components/recipe-card"
 import Filters from "@/components/filters"
-import { matchRecipes } from "@/utils/match-recipes"
 import type { RecipeDTO } from "@/lib/types"
 
 function ResultsContent() {
@@ -43,6 +42,8 @@ function ResultsContent() {
         const veganParam = searchParams.get("vegan")
         const tagParam = searchParams.get("tag")
         const qParam = searchParams.get("q")
+        // forward the normalized ingredients param so backend can re-parse and score
+        if (ingredientsParam) params.set("ingredients", ingredientsParam)
 
         if (maxTimeParam) params.set("maxTime", maxTimeParam)
         if (vegetarianParam) params.set("vegetarian", vegetarianParam)
@@ -57,27 +58,9 @@ function ResultsContent() {
           throw new Error(body.error || "Failed to fetch recipes")
         }
         const body = await res.json()
-        const apiRecipes: RecipeDTO[] = (body.recipes || []) as RecipeDTO[]
-
-        // Map to the shape expected by matchRecipes (ingredients array of strings, timeMinutes, vegetarian/vegan)
-        const normalized = apiRecipes.map((r) => ({
-          id: String(r.id),
-          slug: r.slug,
-          title: r.title,
-          description: r.description ?? "",
-          ingredients: r.ingredients.map((i) => i.text),
-          steps: r.steps.map((s) => s.text),
-          timeMinutes: r.totalTimeMinutes,
-          totalTimeMinutes: r.totalTimeMinutes,
-          servings: r.servings ?? 1,
-          tags: r.tags ?? [],
-          vegetarian: r.isVegetarian,
-          vegan: r.isVegan,
-          imageUrl: (r as any).imageUrl,
-        }))
-
-        const matched = matchRecipes(ingredients, normalized)
-        setMatchedRecipes(matched)
+        // Backend returns scored & ranked recipes; use as-is
+        const apiRecipes: any[] = (body.recipes || []) as any[]
+        setMatchedRecipes(apiRecipes)
       } catch (err: any) {
         setError(err.message || "Failed to load recipes")
       } finally {
