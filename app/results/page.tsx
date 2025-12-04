@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import RecipeCard from "@/components/recipe-card"
 import Filters from "@/components/filters"
 import { matchRecipes } from "@/utils/match-recipes"
-import recipesData from "@/data/recipes.json"
+import type { RecipeDTO } from "@/lib/types"
 
 function ResultsContent() {
   const router = useRouter()
@@ -20,18 +20,72 @@ function ResultsContent() {
   const [vegetarianOnly, setVegetarianOnly] = useState(false)
   const [veganOnly, setVeganOnly] = useState(false)
   const [maxTime, setMaxTime] = useState<number | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (ingredientsParam) {
+    async function load() {
+      if (!ingredientsParam) return
+
       const ingredients = ingredientsParam
         .split(",")
         .map((i) => i.trim())
         .filter((i) => i.length > 0)
       setUserIngredients(ingredients)
 
-      const matched = matchRecipes(ingredients, recipesData)
-      setMatchedRecipes(matched)
+      setLoading(true)
+      setError(null)
+      try {
+        const params = new URLSearchParams()
+        // forward filters from the URL
+        const maxTimeParam = searchParams.get("maxTime")
+        const vegetarianParam = searchParams.get("vegetarian")
+        const veganParam = searchParams.get("vegan")
+        const tagParam = searchParams.get("tag")
+        const qParam = searchParams.get("q")
+
+        if (maxTimeParam) params.set("maxTime", maxTimeParam)
+        if (vegetarianParam) params.set("vegetarian", vegetarianParam)
+        if (veganParam) params.set("vegan", veganParam)
+        if (tagParam) params.set("tag", tagParam)
+        if (qParam) params.set("q", qParam)
+
+        // fetch from API
+        const res = await fetch(`/api/recipes?${params.toString()}`)
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}))
+          throw new Error(body.error || "Failed to fetch recipes")
+        }
+        const body = await res.json()
+        const apiRecipes: RecipeDTO[] = (body.recipes || []) as RecipeDTO[]
+
+        // Map to the shape expected by matchRecipes (ingredients array of strings, timeMinutes, vegetarian/vegan)
+        const normalized = apiRecipes.map((r) => ({
+          id: String(r.id),
+          slug: r.slug,
+          title: r.title,
+          description: r.description ?? "",
+          ingredients: r.ingredients.map((i) => i.text),
+          steps: r.steps.map((s) => s.text),
+          timeMinutes: r.totalTimeMinutes,
+          totalTimeMinutes: r.totalTimeMinutes,
+          servings: r.servings ?? 1,
+          tags: r.tags ?? [],
+          vegetarian: r.isVegetarian,
+          vegan: r.isVegan,
+          imageUrl: (r as any).imageUrl,
+        }))
+
+        const matched = matchRecipes(ingredients, normalized)
+        setMatchedRecipes(matched)
+      } catch (err: any) {
+        setError(err.message || "Failed to load recipes")
+      } finally {
+        setLoading(false)
+      }
     }
+
+    load()
   }, [ingredientsParam])
 
   const filteredRecipes = useMemo(() => {
@@ -97,7 +151,11 @@ function ResultsContent() {
           />
 
           {/* Recipe Grid */}
-          {filteredRecipes.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-16">Loading recipes…</div>
+          ) : error ? (
+            <div className="text-center py-16 text-red-500">{error}</div>
+          ) : filteredRecipes.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredRecipes.map((recipe) => (
                 <RecipeCard key={recipe.id} recipe={recipe} userIngredients={userIngredients} />

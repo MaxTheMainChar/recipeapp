@@ -1,9 +1,10 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Clock, Tag } from "lucide-react"
+import type { RecipeDTO } from "@/lib/types"
 
-interface RecipeCardProps {
-  recipe: any
+type RecipeCardProps = {
+  recipe: RecipeDTO & { matches?: string[]; missing?: string[] }
   userIngredients: string[]
 }
 
@@ -14,14 +15,16 @@ export default function RecipeCard({ recipe, userIngredients }: RecipeCardProps)
 
   const ingredientsParam = userIngredients.join(",")
 
+  const timeMinutes = recipe.totalTimeMinutes
+
   return (
     <Link
-      href={`/recipe/${recipe.id}?ingredients=${encodeURIComponent(ingredientsParam)}`}
+      href={`/recipe/${recipe.slug}?ingredients=${encodeURIComponent(ingredientsParam)}`}
       className="group bg-card rounded-2xl shadow-lg border border-border overflow-hidden hover:shadow-xl transition-shadow"
     >
       <div className="relative h-48 bg-secondary">
         <Image
-          src={recipe.imageUrl || `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(recipe.title)}`}
+          src={recipe['imageUrl'] || `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(recipe.title)}`}
           alt={recipe.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -48,7 +51,7 @@ export default function RecipeCard({ recipe, userIngredients }: RecipeCardProps)
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
-            <span>{recipe.timeMinutes} min</span>
+            <span>{timeMinutes} min</span>
           </div>
           {recipe.tags && recipe.tags.length > 0 && (
             <div className="flex items-center gap-1">

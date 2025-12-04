@@ -1,10 +1,12 @@
 interface Recipe {
   id: string
+  slug?: string
   title: string
   description: string
   ingredients: string[]
   steps: string[]
   timeMinutes: number
+  totalTimeMinutes?: number
   servings: number
   tags: string[]
   vegetarian: boolean
