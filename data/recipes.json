@@ -1,0 +1,319 @@
+[
+  {
+    "id": "chicken-fried-rice",
+    "title": "Chicken Fried Rice",
+    "description": "A quick and easy fried rice using leftover chicken.",
+    "ingredients": ["chicken breast", "rice", "egg", "soy sauce", "green onion", "garlic", "oil"],
+    "steps": [
+      "Cook the rice and let it cool.",
+      "Heat oil in a pan and sauté garlic.",
+      "Add chicken and cook through.",
+      "Add rice, soy sauce, and stir-fry.",
+      "Push to the side, scramble the egg, then mix in.",
+      "Top with chopped green onions and serve."
+    ],
+    "timeMinutes": 25,
+    "servings": 2,
+    "tags": ["quick", "leftovers"],
+    "vegetarian": false,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "simple-omelette",
+    "title": "Simple Cheese Omelette",
+    "description": "A classic breakfast omelette with cheese.",
+    "ingredients": ["egg", "cheese", "butter", "salt", "pepper"],
+    "steps": [
+      "Beat eggs with salt and pepper.",
+      "Melt butter in a non-stick pan over medium heat.",
+      "Pour in eggs and let them set slightly.",
+      "Add cheese to one half of the omelette.",
+      "Fold the omelette in half and cook for another minute.",
+      "Slide onto a plate and serve immediately."
+    ],
+    "timeMinutes": 10,
+    "servings": 1,
+    "tags": ["quick", "breakfast"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "pasta-tomato-sauce",
+    "title": "Pasta with Simple Tomato Sauce",
+    "description": "Classic pasta with a quick homemade tomato sauce.",
+    "ingredients": ["pasta", "tomato", "garlic", "olive oil", "basil", "salt", "pepper"],
+    "steps": [
+      "Boil pasta according to package instructions.",
+      "Heat olive oil in a pan and sauté minced garlic.",
+      "Add chopped tomatoes and simmer for 10 minutes.",
+      "Season with salt, pepper, and fresh basil.",
+      "Toss cooked pasta with the sauce.",
+      "Serve hot with extra basil on top."
+    ],
+    "timeMinutes": 20,
+    "servings": 2,
+    "tags": ["quick", "italian"],
+    "vegetarian": true,
+    "vegan": true,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "vegetable-stir-fry",
+    "title": "Vegetable Stir Fry",
+    "description": "Colorful and healthy vegetable stir fry.",
+    "ingredients": ["broccoli", "bell pepper", "carrot", "onion", "garlic", "soy sauce", "oil", "ginger"],
+    "steps": [
+      "Chop all vegetables into bite-sized pieces.",
+      "Heat oil in a wok or large pan.",
+      "Add garlic and ginger, stir-fry for 30 seconds.",
+      "Add harder vegetables like carrots first, cook for 2 minutes.",
+      "Add remaining vegetables and stir-fry for 3-4 minutes.",
+      "Add soy sauce, toss well, and serve immediately."
+    ],
+    "timeMinutes": 15,
+    "servings": 2,
+    "tags": ["quick", "healthy"],
+    "vegetarian": true,
+    "vegan": true,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "grilled-cheese-sandwich",
+    "title": "Classic Grilled Cheese Sandwich",
+    "description": "Crispy, golden grilled cheese sandwich.",
+    "ingredients": ["bread", "cheese", "butter"],
+    "steps": [
+      "Butter one side of each bread slice.",
+      "Place cheese between the unbuttered sides.",
+      "Heat a pan over medium heat.",
+      "Cook the sandwich buttered-side down until golden.",
+      "Flip and cook the other side until cheese melts.",
+      "Cut and serve warm."
+    ],
+    "timeMinutes": 8,
+    "servings": 1,
+    "tags": ["quick", "comfort food"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "chicken-caesar-salad",
+    "title": "Chicken Caesar Salad",
+    "description": "Fresh Caesar salad with grilled chicken.",
+    "ingredients": [
+      "chicken breast",
+      "romaine lettuce",
+      "parmesan cheese",
+      "croutons",
+      "caesar dressing",
+      "lemon",
+      "olive oil"
+    ],
+    "steps": [
+      "Season and grill chicken breast until cooked through.",
+      "Let chicken rest, then slice into strips.",
+      "Wash and chop romaine lettuce.",
+      "Toss lettuce with Caesar dressing.",
+      "Top with sliced chicken, parmesan, and croutons.",
+      "Squeeze fresh lemon over the top and serve."
+    ],
+    "timeMinutes": 20,
+    "servings": 2,
+    "tags": ["healthy", "salad"],
+    "vegetarian": false,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "rice-bowl",
+    "title": "Simple Rice Bowl",
+    "description": "Customizable rice bowl with vegetables and protein.",
+    "ingredients": ["rice", "egg", "soy sauce", "green onion", "sesame oil", "carrot", "cucumber"],
+    "steps": [
+      "Cook rice according to package instructions.",
+      "Fry an egg to your liking.",
+      "Slice carrot and cucumber into thin strips.",
+      "Place rice in a bowl.",
+      "Top with fried egg, vegetables, and green onions.",
+      "Drizzle with soy sauce and sesame oil."
+    ],
+    "timeMinutes": 18,
+    "servings": 1,
+    "tags": ["quick", "customizable"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "spaghetti-aglio-olio",
+    "title": "Spaghetti Aglio e Olio",
+    "description": "Simple Italian pasta with garlic and olive oil.",
+    "ingredients": ["spaghetti", "garlic", "olive oil", "red pepper flakes", "parsley", "parmesan cheese", "salt"],
+    "steps": [
+      "Cook spaghetti in salted boiling water.",
+      "Heat olive oil in a large pan.",
+      "Add sliced garlic and red pepper flakes, cook until fragrant.",
+      "Add cooked pasta to the pan with some pasta water.",
+      "Toss everything together.",
+      "Serve with parsley and parmesan cheese."
+    ],
+    "timeMinutes": 15,
+    "servings": 2,
+    "tags": ["quick", "italian"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "beef-tacos",
+    "title": "Easy Beef Tacos",
+    "description": "Quick and flavorful beef tacos for dinner.",
+    "ingredients": [
+      "ground beef",
+      "taco shells",
+      "lettuce",
+      "tomato",
+      "cheese",
+      "sour cream",
+      "onion",
+      "taco seasoning"
+    ],
+    "steps": [
+      "Brown ground beef in a pan over medium-high heat.",
+      "Add taco seasoning and a splash of water, simmer.",
+      "Warm taco shells according to package instructions.",
+      "Chop lettuce, tomato, and onion.",
+      "Fill taco shells with beef and toppings.",
+      "Serve with sour cream and extra cheese."
+    ],
+    "timeMinutes": 20,
+    "servings": 3,
+    "tags": ["quick", "mexican"],
+    "vegetarian": false,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "caprese-salad",
+    "title": "Caprese Salad",
+    "description": "Fresh mozzarella and tomato salad with basil.",
+    "ingredients": ["tomato", "mozzarella cheese", "basil", "olive oil", "balsamic vinegar", "salt", "pepper"],
+    "steps": [
+      "Slice tomatoes and mozzarella into rounds.",
+      "Arrange alternating slices on a plate.",
+      "Tuck fresh basil leaves between slices.",
+      "Drizzle with olive oil and balsamic vinegar.",
+      "Season with salt and pepper.",
+      "Serve immediately or chill for 15 minutes."
+    ],
+    "timeMinutes": 10,
+    "servings": 2,
+    "tags": ["quick", "salad", "italian"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "vegetable-soup",
+    "title": "Hearty Vegetable Soup",
+    "description": "Warm and comforting vegetable soup.",
+    "ingredients": ["carrot", "celery", "onion", "tomato", "potato", "vegetable broth", "garlic", "olive oil", "herbs"],
+    "steps": [
+      "Dice all vegetables into small pieces.",
+      "Heat olive oil in a large pot and sauté onion and garlic.",
+      "Add carrots, celery, and potato, cook for 5 minutes.",
+      "Add tomatoes and vegetable broth.",
+      "Bring to a boil, then simmer for 25 minutes.",
+      "Season with herbs, salt, and pepper before serving."
+    ],
+    "timeMinutes": 40,
+    "servings": 4,
+    "tags": ["healthy", "comfort food"],
+    "vegetarian": true,
+    "vegan": true,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "pancakes",
+    "title": "Fluffy Pancakes",
+    "description": "Classic breakfast pancakes that everyone loves.",
+    "ingredients": ["flour", "milk", "egg", "sugar", "baking powder", "butter", "salt"],
+    "steps": [
+      "Mix flour, sugar, baking powder, and salt in a bowl.",
+      "In another bowl, whisk egg, milk, and melted butter.",
+      "Combine wet and dry ingredients until just mixed.",
+      "Heat a griddle or pan over medium heat.",
+      "Pour batter and cook until bubbles form, then flip.",
+      "Serve warm with syrup and butter."
+    ],
+    "timeMinutes": 20,
+    "servings": 3,
+    "tags": ["breakfast", "comfort food"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "greek-salad",
+    "title": "Fresh Greek Salad",
+    "description": "Classic Greek salad with feta and olives.",
+    "ingredients": ["cucumber", "tomato", "red onion", "feta cheese", "olives", "olive oil", "lemon", "oregano"],
+    "steps": [
+      "Chop cucumber, tomato, and red onion into chunks.",
+      "Add to a large bowl with olives.",
+      "Crumble feta cheese on top.",
+      "Drizzle with olive oil and fresh lemon juice.",
+      "Sprinkle with dried oregano.",
+      "Toss gently and serve immediately."
+    ],
+    "timeMinutes": 12,
+    "servings": 2,
+    "tags": ["quick", "salad", "healthy"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "quesadilla",
+    "title": "Cheese Quesadilla",
+    "description": "Crispy tortilla filled with melted cheese.",
+    "ingredients": ["tortilla", "cheese", "butter", "sour cream", "salsa"],
+    "steps": [
+      "Place cheese on half of a tortilla.",
+      "Fold the tortilla in half.",
+      "Melt butter in a pan over medium heat.",
+      "Cook quesadilla until golden on both sides.",
+      "Cut into wedges.",
+      "Serve with sour cream and salsa."
+    ],
+    "timeMinutes": 8,
+    "servings": 1,
+    "tags": ["quick", "mexican"],
+    "vegetarian": true,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  },
+  {
+    "id": "garlic-butter-shrimp",
+    "title": "Garlic Butter Shrimp",
+    "description": "Quick and flavorful shrimp in garlic butter.",
+    "ingredients": ["shrimp", "garlic", "butter", "lemon", "parsley", "salt", "pepper"],
+    "steps": [
+      "Peel and devein shrimp if needed.",
+      "Melt butter in a large pan over medium-high heat.",
+      "Add minced garlic and cook for 30 seconds.",
+      "Add shrimp and cook for 2-3 minutes per side.",
+      "Squeeze lemon juice over shrimp.",
+      "Garnish with fresh parsley and serve."
+    ],
+    "timeMinutes": 12,
+    "servings": 2,
+    "tags": ["quick", "seafood"],
+    "vegetarian": false,
+    "vegan": false,
+    "imageUrl": "/placeholder.svg?height=400&width=600"
+  }
+]

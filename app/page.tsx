@@ -1,103 +1,111 @@
-import Image from "next/image";
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { ChefHat, Plus } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+const commonIngredients = ["egg", "rice", "cheese", "tomato", "onion", "garlic", "chicken", "pasta"]
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter()
+  const [ingredients, setIngredients] = useState("")
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const handleAddIngredient = (ingredient: string) => {
+    const current = ingredients.trim()
+    if (current && !current.endsWith(",")) {
+      setIngredients(current + ", " + ingredient)
+    } else if (current.endsWith(",")) {
+      setIngredients(current + " " + ingredient)
+    } else {
+      setIngredients(ingredient)
+    }
+  }
+
+  const handleFindRecipes = () => {
+    const ingredientList = ingredients
+      .split(",")
+      .map((i) => i.trim())
+      .filter((i) => i.length > 0)
+      .join(",")
+
+    if (ingredientList) {
+      router.push(`/results?ingredients=${encodeURIComponent(ingredientList)}`)
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="border-b border-border bg-card">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+            <ChefHat className="w-6 h-6 text-primary-foreground" />
+          </div>
+          <span className="text-2xl font-bold text-foreground">FridgeToFork</span>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="flex-1 flex items-center justify-center px-4 py-16">
+        <div className="max-w-3xl w-full">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
+              Turn your leftover ingredients into dinner.
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground text-balance">
+              Type what you have in your kitchen and get instant recipe ideas.
+            </p>
+          </div>
+
+          {/* Input Card */}
+          <div className="bg-card rounded-2xl shadow-lg border border-border p-8">
+            <label htmlFor="ingredients" className="block text-sm font-medium text-foreground mb-3">
+              What ingredients do you have?
+            </label>
+            <textarea
+              id="ingredients"
+              value={ingredients}
+              onChange={(e) => setIngredients(e.target.value)}
+              placeholder="e.g., chicken, rice, onion, garlic, tomato"
+              className="w-full h-32 px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+
+            {/* Quick Add Chips */}
+            <div className="mt-4 mb-6">
+              <p className="text-sm text-muted-foreground mb-3">Quick add:</p>
+              <div className="flex flex-wrap gap-2">
+                {commonIngredients.map((ingredient) => (
+                  <button
+                    key={ingredient}
+                    onClick={() => handleAddIngredient(ingredient)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    <Plus className="w-3 h-3" />
+                    {ingredient}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Find Recipes Button */}
+            <Button
+              onClick={handleFindRecipes}
+              disabled={!ingredients.trim()}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg font-semibold rounded-xl"
+            >
+              Find recipes
+            </Button>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="border-t border-border py-6 bg-card">
+        <div className="max-w-6xl mx-auto px-4 text-center text-sm text-muted-foreground">
+          © 2025 FridgeToFork. Cook smart, waste less.
+        </div>
       </footer>
     </div>
-  );
+  )
 }
