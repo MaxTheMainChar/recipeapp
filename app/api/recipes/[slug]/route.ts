@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(_req: NextRequest, context: { params: any }) {
   try {
-    const { slug } = params;
+    const params = await Promise.resolve(context.params);
+    const { slug } = params as { slug: string };
     const recipe = await prisma.recipe.findUnique({
       where: { slug },
       include: {
