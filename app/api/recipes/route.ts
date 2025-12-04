@@ -102,10 +102,10 @@ export async function GET(req: NextRequest) {
       }
 
       if (matchedUserCount > 0) {
-        const missing = recipeIngredientTexts.filter((t) => !matchedRecipeIngredients.includes(t))
+          const missing = recipeIngredientTexts.filter((t: string) => !matchedRecipeIngredients.includes(t))
         scored.push({
           ...r,
-          tags: r.tags.map((t: any) => t.tag.name),
+          tags: r.tags.map((t: { tag: { name: string } }) => t.tag.name),
           matches: matchedRecipeIngredients,
           missing,
           score: matchedUserCount,

@@ -45,9 +45,9 @@ export default async function RecipeDetail({ params }: Props) {
     description: recipe.description ?? "",
     timeMinutes: recipe.totalTimeMinutes,
     servings: recipe.servings ?? 1,
-    ingredients: recipe.ingredients.map((i) => i.text),
-    steps: recipe.steps.map((s) => s.text),
-    tags: recipe.tags.map((t) => t.tag.name),
+    ingredients: recipe.ingredients.map((i: { text: string }) => i.text),
+    steps: recipe.steps.map((s: { text: string }) => s.text),
+    tags: recipe.tags.map((t: { tag: { name: string } }) => t.tag.name),
     vegetarian: recipe.isVegetarian,
     vegan: recipe.isVegan,
   }

@@ -18,6 +18,7 @@ export type RecipeDTO = {
   slug: string
   title: string
   description?: string | null
+  imageUrl?: string | null
   totalTimeMinutes: number
   difficulty: Difficulty
   costLevel: CostLevel

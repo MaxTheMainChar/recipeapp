@@ -18,7 +18,7 @@ export async function GET(_req: NextRequest, context: { params: any }) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    const mapped = { ...recipe, tags: recipe.tags.map((t) => t.tag.name) };
+    const mapped = { ...recipe, tags: recipe.tags.map((t: { tag: { name: string } }) => t.tag.name) };
 
     return NextResponse.json(mapped);
   } catch (err) {

@@ -22,9 +22,9 @@ export default function RecipeCard({ recipe, userIngredients }: RecipeCardProps)
       href={`/recipe/${recipe.slug}?ingredients=${encodeURIComponent(ingredientsParam)}`}
       className="group bg-card rounded-2xl shadow-lg border border-border overflow-hidden hover:shadow-xl transition-shadow"
     >
-      <div className="relative h-48 bg-secondary">
+        <div className="relative h-48 bg-secondary">
         <Image
-          src={recipe['imageUrl'] || `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(recipe.title)}`}
+          src={recipe.imageUrl || `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(recipe.title)}`}
           alt={recipe.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"

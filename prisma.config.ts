@@ -8,7 +8,7 @@ const config = {
     seed: 'ts-node prisma/seed.ts',
   },
   datasource: {
-    // Use process.env here to avoid depending on prisma/config at runtime
+    // Provide connection URL for migrations and Prisma CLI (Prisma v7+)
     url: process.env.DATABASE_URL ?? '',
   },
 }
